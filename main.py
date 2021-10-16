@@ -8,6 +8,8 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+DB_URI = os.getenv("DB_URI")
+
 @app.route('/')
 def index():
     return "Companion API :)"
@@ -15,7 +17,7 @@ def index():
 
 @app.route('/api/v1/')
 def get_all_data():
-    client = pymongo.MongoClient("mongodb+srv://admin:admin@cluster0.zodle.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    client = pymongo.MongoClient(DB_URI)
     db = client.test
 
 if __name__ == '__main__':

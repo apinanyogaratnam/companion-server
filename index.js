@@ -37,7 +37,14 @@ app.get("/", function(req, res) {
 // check if user exists
 // search for a particular user from db
 app.get("/api/v1/users/:user", function(req, res) {
-    // code goes here
+    Person.findOne({email: req.params.user}, function(err, user){
+        if(err){
+            console.log(err);
+            res.status(500).send({error: "User not able to be retrieved"});
+        }else{
+            res.status(200).json(user)
+        }
+    });
 });
 
 // create new user (signup)
@@ -97,18 +104,6 @@ app.get("/api/v1/users", function(req, res) {
             res.status(500).send({error: "Users not able to be retrieved"});
         } else {
             res.status(200).json(users);
-        }
-    });
-});
-
-// search for a particular user from db
-app.get("/api/v1/:user", function(req, res) {
-    Person.findOne({email: req.params.user}, function(err, user){
-        if(err){
-            console.log(err);
-            res.status(500).send({error: "User not able to be retrieved"});
-        }else{
-            res.status(200).json(user)
         }
     });
 });

@@ -36,13 +36,25 @@ app.get("/", function(req, res) {
 
 // check if user exists
 // search for a particular user from db
-app.get("/api/v1/users/:user", function(req, res) {
-    Person.findOne({email: req.params.user}, function(err, user){
+app.get("/api/v1/users/:_id", function(req, res) {
+    Person.findOne({_id: req.params._id}, function(err, user){
         if(err){
             console.log(err);
             res.status(500).send({error: "User not able to be retrieved"});
         }else{
             res.status(200).json(user);
+        }
+    });
+});
+
+// get id of user
+app.post("/api/v1/user", function(req, res) {
+    var email = req.body.email;
+    Person.findOne({email: email}, function(err, user) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({"_id": user._id});
         }
     });
 });
@@ -78,9 +90,9 @@ app.post("/api/v1/users", function(req, res) {
 });
 
 // get user's logs
-app.get("/api/v1/:user/logs", function(req, res) {
-    const email = req.params.user;
-    Person.find({email: email}, function(err, data) {
+app.get("/api/v1/:_id/logs", function(req, res) {
+    const id = req.params._id;
+    Person.find({_id: id}, function(err, data) {
         if (err) {
             res.status(500).json({error: err});
         } else if (data.length === 0) {
@@ -92,8 +104,8 @@ app.get("/api/v1/:user/logs", function(req, res) {
 });
 
 // add new log to a user
-app.patch("/api/v1/:user/logs", async function(req, res) {
-    const email = req.params.user;
+app.patch("/api/v1/:_id/logs", async function(req, res) {
+    const id = req.params._id;
     const log = req.body;
     const date = new Date();
     const newLog = {
@@ -102,7 +114,7 @@ app.patch("/api/v1/:user/logs", async function(req, res) {
         mood: log.mood
     };
     try {
-        const user = await Person.findOne({email: email});
+        const user = await Person.findOne({_id: id});
         if (user) {
             user.logs.push(newLog);
             await user.save();

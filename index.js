@@ -36,9 +36,16 @@ app.post("/api/v1/users", function(req, res) {
     console.log(user);
 });
 
+// get all the users from the mongodb
+// return the users in json format
 app.get("/api/v1/users", function(req, res) {
-    // get all the users from the mongodb
-    // return the users in json format
+    Person.find({}, function(err, pers){
+        if(err){
+            return next(err);
+        }
+        res.json(pers);
+    });
+    return res;
 });
 
 var listener = app.listen(port, function () {

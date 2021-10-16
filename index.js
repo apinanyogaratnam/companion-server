@@ -42,7 +42,7 @@ app.get("/api/v1/users/:user", function(req, res) {
             console.log(err);
             res.status(500).send({error: "User not able to be retrieved"});
         }else{
-            res.status(200).json(user)
+            res.status(200).json(user);
         }
     });
 });
@@ -137,10 +137,16 @@ app.post("/api/v1/validate/", function(req, res) {
             console.log(err);
             res.status(500).send({error: "User not found"});
         } else {
-            res.status(201).send({success: "User validated"});
+            res.status(201).json({data: user});
         }
     });
 });
+
+// chatbot
+// app.post("/api/v1/chatbot" (req, res) => {
+    
+    
+// });
 
 var listener = app.listen(port, function () {
     console.log('Your app is listening on port ' + port);

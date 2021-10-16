@@ -9,10 +9,10 @@ const port = process.env.PORT || 3000;
 
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 const schema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    password: String,
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
     age: Number,
     logs: [
         {
@@ -79,6 +79,7 @@ app.post("/api/v1/users", function(req, res) {
 
 // get all users from db
 app.get("/api/v1/users", function(req, res) {
+    console.log("here");
     Person.find({}, function(err, users) {
         if (err) {
             console.log(err);

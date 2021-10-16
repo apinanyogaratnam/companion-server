@@ -42,22 +42,30 @@ app.get("/api/v1/:user", function(req, res) {
 
 // create new user (signup)
 app.post("/api/v1/users", function(req, res) {
-    // add conditional to check if user already exists
+    // add conditional to check if user already exists)
     var user = req.body;
-    var newUser = new Person({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-        age: user.age,
-        logs: []
-    });
-    newUser.save(function(err, user) {
+
+    Person.find({email: user.email}, function(err, data) {
         if (err) {
-            console.log(err);
-            res.status(500).send({error: "User not able to be created"});
+            res.status(500).json({error: err});
+        } else if (data.length > 0) {
+            res.status(400).json({error: "User already exists"});
         } else {
-            res.status(201).send({success: "User created"});
+            var newUser = new Person({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                password: user.password,
+                age: user.age,
+                logs: []
+            });
+            newUser.save(function(err, data) {
+                if (err) {
+                    res.status(500).json({error: err});
+                } else {
+                    res.status(201).json({message: "User created"});
+                }
+            });
         }
     });
 });

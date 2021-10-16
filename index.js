@@ -26,9 +26,9 @@ const schema = new mongoose.Schema({
 const Person = mongoose.model('Person', schema);
 
 app.use(cors());
-app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => { console.dir(req); next(); });
 
 app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
@@ -36,7 +36,7 @@ app.get("/", function(req, res) {
 
 // check if user exists
 // search for a particular user from db
-app.get("/api/v1/:user", function(req, res) {
+app.get("/api/v1/users/:user", function(req, res) {
     // code goes here
 });
 
@@ -72,7 +72,16 @@ app.post("/api/v1/users", function(req, res) {
 
 // get user's logs
 app.get("/api/v1/:user/logs", function(req, res) {
-    // code goes here
+    const user = req.params.user;
+    Person.find({email: user}, function(err, data) {
+        if (err) {
+            res.status(500).json({error: err});
+        } else if (data.length === 0) {
+            res.status(404).json({error: "User not found"});
+        } else {
+            res.status(200).json({logs: data[0].logs});
+        }
+    });
 });
 
 // add new log to a user

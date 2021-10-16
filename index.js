@@ -79,8 +79,8 @@ app.post("/api/v1/users", function(req, res) {
 
 // get user's logs
 app.get("/api/v1/:user/logs", function(req, res) {
-    const user = req.params.user;
-    Person.find({email: user}, function(err, data) {
+    const email = req.params.user;
+    Person.find({email: email}, function(err, data) {
         if (err) {
             res.status(500).json({error: err});
         } else if (data.length === 0) {

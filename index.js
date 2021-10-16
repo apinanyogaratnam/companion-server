@@ -30,19 +30,6 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const restricted = express.Router();
-// restricted.use(bearerToken());
-// restricted.use(async (req, res, next) => {
-//   if (!req.token) res.status(403).send({ success: false, message: `Unauthorized (${message})` });
-//   try {
-//     const token = await jwt.verify(req.token, process.env.TOKEN_SECRET);
-//     req.userId = token.id;
-//     next();
-//   } catch (err) {
-//     failUnauthorized(res, 'invalid token');
-//   }
-// });
-
 app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
 });

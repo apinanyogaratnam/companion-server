@@ -137,7 +137,7 @@ app.post("/api/v1/validate/", function(req, res) {
             console.log(err);
             res.status(500).send({error: "User not found"});
         } else {
-            res.status(201).send({success: "User validated"});
+            res.status(201).send({success: "User validated", user});
         }
     });
 });

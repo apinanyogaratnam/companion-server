@@ -42,8 +42,11 @@ app.get("/api/v1/:user", function(req, res) {
 
 // create new user (signup)
 app.post("/api/v1/users", function(req, res) {
-    // add conditional to check if user already exists
     var user = req.body;
+    // add conditional to check if user already exists
+    if(Person.findOne({email: req.params.user})){
+        return; // cancel newUser creation
+    }
     var newUser = new Person({
         firstName: user.firstName,
         lastName: user.lastName,

@@ -79,13 +79,12 @@ app.post("/api/v1/users", function(req, res) {
 
 // get all users from db
 app.get("/api/v1/users", function(req, res) {
-    Person.find({}, function(err, pers){
+    Person.find({}, function(err, data){
         if(err){
             return next(err);
         }
-        res.json(pers);
+        res.json(data);
     });
-    return res;
 });
 
 // validate user login credentials
@@ -98,7 +97,7 @@ app.get("/api/v1/validate/", function(req, res) {
             console.log(err);
             res.status(500).send({error: "User not found"});
         } else {
-            res.status(201).send({success: "User found"});
+            res.status(201).send({success: "User validated"});
         }
     });
 });

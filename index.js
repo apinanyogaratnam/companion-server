@@ -92,8 +92,27 @@ app.get("/api/v1/:user/logs", function(req, res) {
 });
 
 // add new log to a user
-app.post("/api/v1/:user/logs", function(req, res) {
-    // code goes here
+app.patch("/api/v1/:user/logs", async function(req, res) {
+    const email = req.params.user;
+    const log = req.body;
+    const date = new Date();
+    const newLog = {
+        date: date,
+        message: log.message,
+        mood: log.mood
+    };
+    try {
+        const user = await Person.findOne({email: email});
+        if (user) {
+            user.logs.push(newLog);
+            await user.save();
+            res.status(201).json({message: "Log added"});
+        } else {
+            res.status(404).json({error: "User not found"});
+        }
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
 });
 
 // get all users from db

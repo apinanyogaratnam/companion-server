@@ -57,8 +57,6 @@ app.get("/api/v1/:user", function(req, res) {
 app.post("/api/v1/users", function(req, res) {
     // add conditional to check if user already exists
     var user = req.body;
-    console.log(user);
-    console.dir(req);
     var newUser = new Person({
         firstName: user.firstName,
         lastName: user.lastName,

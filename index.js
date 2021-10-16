@@ -15,6 +15,6 @@ app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
 });
 
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(port, function () {
     console.log('Your app is listening on port ' + port);
 });

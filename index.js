@@ -48,6 +48,22 @@ app.get("/", function(req, res) {
 app.post("/api/v1/users", function(req, res) {
     var user = req.body;
     console.log(user);
+    var newUser = new Person({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        age: user.age,
+        logs: []
+    });
+    newUser.save(function(err, user) {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            res.status(201).send(user);
+        }
+    });
 });
 
 // app.get("/api/v1/users", function(req, res) {

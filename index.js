@@ -77,7 +77,7 @@ app.get("/api/v1/users", function(req, res) {
 
 // search for a particular user from db
 app.get("/api/v1/:user", function(req, res) {
-    Person.findOne({req}, function(err, user){
+    Person.findOne({email: req.params.user}, function(err, user){
         if(err){
             console.log(err);
             res.status(500).send({error: "User not able to be retrieved"});

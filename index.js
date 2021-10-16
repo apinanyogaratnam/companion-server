@@ -82,7 +82,12 @@ app.get("/api/v1/users", function(req, res) {
 
 // search for a particular user from db
 app.get("/api/v1/:user", function(req, res) {
-    // code goes here
+    Person.findOne({req}, function(err, pers){
+        if(err){
+            throw err;
+        }
+        return res.json(pers);
+    })
 }));
 
 

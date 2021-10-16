@@ -37,7 +37,8 @@ app.get("/", function(req, res) {
 // check if user exists
 // search for a particular user from db
 app.get("/api/v1/:user", function(req, res) {
-    // code goes here
+    var user = req.body;
+    return Person.findOne({email: req.params.user});
 });
 
 // create new user (signup)

@@ -101,6 +101,18 @@ app.get("/api/v1/users", function(req, res) {
     });
 });
 
+// search for a particular user from db
+app.get("/api/v1/:user", function(req, res) {
+    Person.findOne({email: req.params.user}, function(err, user){
+        if(err){
+            console.log(err);
+            res.status(500).send({error: "User not able to be retrieved"});
+        }else{
+            res.status(200).json(user)
+        }
+    });
+});
+
 // validate user login credentials
 app.get("/api/v1/validate/", function(req, res) {
     const email = req.body.email;
@@ -115,7 +127,6 @@ app.get("/api/v1/validate/", function(req, res) {
         }
     });
 });
-
 
 var listener = app.listen(port, function () {
     console.log('Your app is listening on port ' + port);

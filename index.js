@@ -69,10 +69,18 @@ app.post("/api/v1/users", function(req, res) {
     });
 });
 
-// app.get("/api/v1/users", function(req, res) {
-//     // get all the users from the mongodb
-//     // return the users in json format
-// });
+// get all the users from the mongodb
+// return the users in json format
+app.get("/api/v1/users", function(req, res) {
+    Person.find({}, function(err, pers){
+        if(err){
+            return next(err);
+        }
+        res.json(pers);
+    });
+    return res;
+});
+
 
 var listener = app.listen(port, function () {
     console.log('Your app is listening on port ' + port);

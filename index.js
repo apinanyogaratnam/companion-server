@@ -27,19 +27,21 @@ const Person = mongoose.model('Person', schema);
 
 app.use(cors());
 app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const restricted = express.Router();
-restricted.use(bearerToken());
-restricted.use(async (req, res, next) => {
-  if (!req.token) res.status(403).send({ success: false, message: `Unauthorized (${message})` });
-  try {
-    const token = await jwt.verify(req.token, process.env.TOKEN_SECRET);
-    req.userId = token.id;
-    next();
-  } catch (err) {
-    failUnauthorized(res, 'invalid token');
-  }
-});
+// const restricted = express.Router();
+// restricted.use(bearerToken());
+// restricted.use(async (req, res, next) => {
+//   if (!req.token) res.status(403).send({ success: false, message: `Unauthorized (${message})` });
+//   try {
+//     const token = await jwt.verify(req.token, process.env.TOKEN_SECRET);
+//     req.userId = token.id;
+//     next();
+//   } catch (err) {
+//     failUnauthorized(res, 'invalid token');
+//   }
+// });
 
 app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
@@ -48,6 +50,7 @@ app.get("/", function(req, res) {
 app.post("/api/v1/users", function(req, res) {
     var user = req.body;
     console.log(user);
+    console.dir(req);
     var newUser = new Person({
         firstName: user.firstName,
         lastName: user.lastName,
@@ -59,9 +62,9 @@ app.post("/api/v1/users", function(req, res) {
     newUser.save(function(err, user) {
         if (err) {
             console.log(err);
-            res.status(500).send(err);
+            res.status(500).send({error: "User not able to be created"});
         } else {
-            res.status(201).send(user);
+            res.status(201).send({success: "User created"});
         }
     });
 });

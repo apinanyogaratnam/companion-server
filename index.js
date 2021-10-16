@@ -26,9 +26,9 @@ const schema = new mongoose.Schema({
 const Person = mongoose.model('Person', schema);
 
 app.use(cors());
-app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use((req, res, next) => { console.dir(req); next(); });
 
 app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
@@ -36,13 +36,26 @@ app.get("/", function(req, res) {
 
 // check if user exists
 // search for a particular user from db
+<<<<<<< HEAD
 app.get("/api/v1/:user", function(req, res) {
     var user = req.body;
     return Person.findOne({email: req.params.user});
+=======
+app.get("/api/v1/users/:user", function(req, res) {
+    Person.findOne({email: req.params.user}, function(err, user){
+        if(err){
+            console.log(err);
+            res.status(500).send({error: "User not able to be retrieved"});
+        }else{
+            res.status(200).json(user)
+        }
+    });
+>>>>>>> 7b581dde4482c0814004e1ec8818d3b4594f73e7
 });
 
 // create new user (signup)
 app.post("/api/v1/users", function(req, res) {
+<<<<<<< HEAD
     var user = req.body;
     // add conditional to check if user already exists
     if(Person.findOne({email: req.params.user})){
@@ -55,15 +68,72 @@ app.post("/api/v1/users", function(req, res) {
         password: user.password,
         age: user.age,
         logs: []
-    });
-    newUser.save(function(err, user) {
+=======
+    // add conditional to check if user already exists)
+    var user = req.body;
+
+    Person.find({email: user.email}, function(err, data) {
         if (err) {
-            console.log(err);
-            res.status(500).send({error: "User not able to be created"});
+            res.status(500).json({error: err});
+        } else if (data.length > 0) {
+            res.status(400).json({error: "User already exists"});
         } else {
-            res.status(201).send({success: "User created"});
+            var newUser = new Person({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                password: user.password,
+                age: user.age,
+                logs: []
+            });
+            newUser.save(function(err, data) {
+                if (err) {
+                    res.status(500).json({error: err});
+                } else {
+                    res.status(201).json({message: "User created"});
+                }
+            });
+        }
+>>>>>>> 7b581dde4482c0814004e1ec8818d3b4594f73e7
+    });
+});
+
+// get user's logs
+app.get("/api/v1/:user/logs", function(req, res) {
+    const email = req.params.user;
+    Person.find({email: email}, function(err, data) {
+        if (err) {
+            res.status(500).json({error: err});
+        } else if (data.length === 0) {
+            res.status(404).json({error: "User not found"});
+        } else {
+            res.status(200).json({logs: data[0].logs});
         }
     });
+});
+
+// add new log to a user
+app.patch("/api/v1/:user/logs", async function(req, res) {
+    const email = req.params.user;
+    const log = req.body;
+    const date = new Date();
+    const newLog = {
+        date: date,
+        message: log.message,
+        mood: log.mood
+    };
+    try {
+        const user = await Person.findOne({email: email});
+        if (user) {
+            user.logs.push(newLog);
+            await user.save();
+            res.status(201).json({message: "Log added"});
+        } else {
+            res.status(404).json({error: "User not found"});
+        }
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
 });
 
 // get all users from db
@@ -71,7 +141,6 @@ app.get("/api/v1/users", function(req, res) {
     console.log("here");
     Person.find({}, function(err, users) {
         if (err) {
-            console.log(err);
             res.status(500).send({error: "Users not able to be retrieved"});
         } else {
             res.status(200).json(users);
@@ -79,20 +148,8 @@ app.get("/api/v1/users", function(req, res) {
     });
 });
 
-// search for a particular user from db
-app.get("/api/v1/:user", function(req, res) {
-    Person.findOne({email: req.params.user}, function(err, user){
-        if(err){
-            console.log(err);
-            res.status(500).send({error: "User not able to be retrieved"});
-        }else{
-            res.status(200).json(user)
-        }
-    });
-});
-
 // validate user login credentials
-app.get("/api/v1/validate/", function(req, res) {
+app.post("/api/v1/validate/", function(req, res) {
     const email = req.body.email;
     const password = req.body.password;
 

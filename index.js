@@ -154,6 +154,19 @@ app.post("/api/v1/validate/", function(req, res) {
     });
 });
 
+app.get('/', async (req, res) => {
+    try {
+      const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
+        { expires_in: 3600 }, // can set a TTL timer in seconds.
+        { headers: { authorization: process.env.ASSEMBLYAI_KEY } }); // AssemblyAI API Key goes here
+      const { data } = response;
+      res.json(data);
+    } catch (error) {
+      const {response: {status, data}} = error;
+      res.status(status).json(data);
+    }
+});
+
 // chatbot
 // app.post("/api/v1/chatbot" (req, res) => {
     

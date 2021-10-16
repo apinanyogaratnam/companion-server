@@ -69,8 +69,7 @@ app.post("/api/v1/users", function(req, res) {
     });
 });
 
-// get all the users from the mongodb
-// return the users in json format
+// get all users from db
 app.get("/api/v1/users", function(req, res) {
     Person.find({}, function(err, pers){
         if(err){
@@ -80,6 +79,11 @@ app.get("/api/v1/users", function(req, res) {
     });
     return res;
 });
+
+// search for a particular user from db
+app.get("/api/v1/:user", function(req, res) {
+    // code goes here
+}));
 
 
 var listener = app.listen(port, function () {

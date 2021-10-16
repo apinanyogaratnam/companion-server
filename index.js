@@ -128,7 +128,7 @@ app.get("/api/v1/users", function(req, res) {
 });
 
 // validate user login credentials
-app.get("/api/v1/validate/", function(req, res) {
+app.post("/api/v1/validate/", function(req, res) {
     const email = req.body.email;
     const password = req.body.password;
 

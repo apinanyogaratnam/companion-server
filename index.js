@@ -79,11 +79,13 @@ app.post("/api/v1/users", function(req, res) {
 
 // get all users from db
 app.get("/api/v1/users", function(req, res) {
-    Person.find({}, function(err, data){
-        if(err){
-            return next(err);
+    Person.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+            res.status(500).send({error: "Users not able to be retrieved"});
+        } else {
+            res.status(200).send(users);
         }
-        res.json(data);
     });
 });
 

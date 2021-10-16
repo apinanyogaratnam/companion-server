@@ -75,7 +75,6 @@ app.get("/api/v1/users", function(req, res) {
     console.log("here");
     Person.find({}, function(err, users) {
         if (err) {
-            console.log(err);
             res.status(500).send({error: "Users not able to be retrieved"});
         } else {
             res.status(200).json(users);

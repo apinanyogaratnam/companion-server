@@ -28,6 +28,19 @@ const Person = mongoose.model('Person', schema);
 app.use(cors());
 app.use(express.static('public'));
 
+const restricted = express.Router();
+restricted.use(bearerToken());
+restricted.use(async (req, res, next) => {
+  if (!req.token) res.status(403).send({ success: false, message: `Unauthorized (${message})` });
+  try {
+    const token = await jwt.verify(req.token, process.env.TOKEN_SECRET);
+    req.userId = token.id;
+    next();
+  } catch (err) {
+    failUnauthorized(res, 'invalid token');
+  }
+});
+
 app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
 });
@@ -37,10 +50,10 @@ app.post("/api/v1/users", function(req, res) {
     console.log(user);
 });
 
-app.get("/api/v1/users", function(req, res) {
-    // get all the users from the mongodb
-    // return the users in json format
-});
+// app.get("/api/v1/users", function(req, res) {
+//     // get all the users from the mongodb
+//     // return the users in json format
+// });
 
 var listener = app.listen(port, function () {
     console.log('Your app is listening on port ' + port);

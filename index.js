@@ -70,6 +70,16 @@ app.post("/api/v1/users", function(req, res) {
     });
 });
 
+// get user's logs
+app.get("/api/v1/:user/logs", function(req, res) {
+    // code goes here
+});
+
+// add new log to a user
+app.post("/api/v1/:user/logs", function(req, res) {
+    // code goes here
+});
+
 // get all users from db
 app.get("/api/v1/users", function(req, res) {
     console.log("here");

@@ -47,8 +47,15 @@ app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
 });
 
+// check if user exists
+// search for a particular user from db
+app.get("/api/v1/:user", function(req, res) {
+    // code goes here
+});
+
 // create new user (signup)
 app.post("/api/v1/users", function(req, res) {
+    // add conditional to check if user already exists
     var user = req.body;
     console.log(user);
     console.dir(req);
@@ -81,9 +88,19 @@ app.get("/api/v1/users", function(req, res) {
     return res;
 });
 
-// search for a particular user from db
-app.get("/api/v1/:user", function(req, res) {
-    // code goes here
+// validate user login credentials
+app.get("/api/v1/validate/", function(req, res) {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    Person.findOne({email: email, password: password}, function(err, user) {
+        if (err) {
+            console.log(err);
+            res.status(500).send({error: "User not found"});
+        } else {
+            res.status(201).send({success: "User found"});
+        }
+    });
 });
 
 

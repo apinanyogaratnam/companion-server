@@ -47,6 +47,7 @@ app.get("/", function(req, res) {
     res.json({greeting: "Welcome to main the API of companion"});
 });
 
+// create new user (signup)
 app.post("/api/v1/users", function(req, res) {
     var user = req.body;
     console.log(user);

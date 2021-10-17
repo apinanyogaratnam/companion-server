@@ -176,7 +176,7 @@ app.get('/api/v1/assemblyai', async (req, res) => {
     }
 });
 
-app.patch("/api/v1/:_id/logs/conversations", function(req, res) {
+app.patch("/api/v1/:_id/logs/conversations", async function(req, res) {
     const id = req.params._id;
     try {
         const user = await Person.findOne({_id: id});

@@ -91,7 +91,7 @@ app.post("/api/v1/users", function(req, res) {
                 if (err) {
                     res.status(500).json({error: err});
                 } else {
-                    res.status(201).json({message: "User created"});
+                    res.status(201).json({user: data});
                 }
             });
         }

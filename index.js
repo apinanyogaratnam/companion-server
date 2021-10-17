@@ -19,9 +19,17 @@ const schema = new mongoose.Schema({
         {
             date: Date,
             message: String,
-            mood: String
+            mood: String,
+            conversations: [
+                [
+                    {
+                        user: String,
+                        bot: String
+                    }
+                ]
+            ]
         }
-    ]
+    ],
 });
 
 const Person = mongoose.model('Person', schema);
@@ -165,6 +173,22 @@ app.get('/api/v1/assemblyai', async (req, res) => {
     } catch (error) {
       const {response: {status, data}} = error;
       res.status(status).json(data);
+    }
+});
+
+app.patch("/api/v1/:_id/logs/conversations", function(req, res) {
+    const id = req.params._id;
+    try {
+        const user = await Person.findOne({_id: id});
+        if (user) {
+            user.logs[user.logs.length - 1].conversations.push(req.body);
+            await user.save();
+            res.status(201).json({message: "convo added"});
+        } else {
+            res.status(404).json({error: "User not found"});
+        }
+    } catch (err) {
+        res.status(500).json({error: err});
     }
 });
 

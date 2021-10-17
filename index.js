@@ -169,9 +169,11 @@ app.get('/api/v1/assemblyai', async (req, res) => {
 });
 
 // chatbot
-// app.post("/api/v1/chatbot" (req, res) => {
-    
-    
+// app.post("/api/v1/chatbot" async (req, res) => {
+//     const message = req.body.message;
+//     const url = "https://companion-api-htv5.herokuapp.com/api/v1" + process.env.TOKEN;
+//     const { data } = await axios.post(url, {message: message});
+//     res.json(data);
 // });
 
 var listener = app.listen(port, function () {

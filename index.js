@@ -181,7 +181,7 @@ app.patch("/api/v1/:_id/logs/conversations", async function(req, res) {
     try {
         const user = await Person.findOne({_id: id});
         if (user) {
-            user.logs[user.logs.length - 1].conversations.push(req.body);
+            user.logs[user.logs.length - 1].conversations.push(req.body.messages);
             await user.save();
             res.status(201).json({message: "convo added"});
         } else {

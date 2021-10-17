@@ -40,10 +40,7 @@ app.get("/", function(req, res) {
 app.get("/api/v1/:user", function(req, res) {
     var user = req.body;
     return Person.findOne({email: req.params.user});
-}
-
-app.get("/api/v1/users/:user", function(req, res) {
-    Person.findOne({email: req.params.user}, function(err, user){
+});
 
 app.get("/api/v1/users/:_id", function(req, res) {
     Person.findOne({_id: req.params._id}, function(err, user){

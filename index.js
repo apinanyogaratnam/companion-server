@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors');
+const axios = require('axios');
 
 const port = process.env.PORT || 3000;
 
@@ -180,7 +181,7 @@ app.post("/api/v1/validate/", function(req, res) {
     });
 });
 
-app.get('/assemblyai', async (req, res) => {
+app.get('/api/v1/assemblyai', async (req, res) => {
     try {
       const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
         { expires_in: 3600 }, // can set a TTL timer in seconds.

@@ -155,7 +155,6 @@ app.post("/api/v1/validate/", function(req, res) {
 });
 
 app.get('/api/v1/assemblyai', async (req, res) => {
-    console.log(process.env.ASSEMBLYAI_KEY);
     try {
       const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
         { expires_in: 3600 }, // can set a TTL timer in seconds.

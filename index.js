@@ -37,18 +37,16 @@ app.get("/", function(req, res) {
 
 // check if user exists
 // search for a particular user from db
-<<<<<<< HEAD
-<<<<<<< HEAD
 app.get("/api/v1/:user", function(req, res) {
     var user = req.body;
     return Person.findOne({email: req.params.user});
-=======
+}
+
 app.get("/api/v1/users/:user", function(req, res) {
     Person.findOne({email: req.params.user}, function(err, user){
-=======
+
 app.get("/api/v1/users/:_id", function(req, res) {
     Person.findOne({_id: req.params._id}, function(err, user){
->>>>>>> b96bee996acbddcf96beb3102d64257fac8a18ac
         if(err){
             console.log(err);
             res.status(500).send({error: "User not able to be retrieved"});
@@ -68,25 +66,10 @@ app.post("/api/v1/user", function(req, res) {
             res.json({"_id": user._id});
         }
     });
->>>>>>> 7b581dde4482c0814004e1ec8818d3b4594f73e7
 });
 
 // create new user (signup)
 app.post("/api/v1/users", function(req, res) {
-<<<<<<< HEAD
-    var user = req.body;
-    // add conditional to check if user already exists
-    if(Person.findOne({email: req.params.user})){
-        return; // cancel newUser creation
-    }
-    var newUser = new Person({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-        age: user.age,
-        logs: []
-=======
     // add conditional to check if user already exists)
     var user = req.body;
 
@@ -112,7 +95,6 @@ app.post("/api/v1/users", function(req, res) {
                 }
             });
         }
->>>>>>> 7b581dde4482c0814004e1ec8818d3b4594f73e7
     });
 });
 
